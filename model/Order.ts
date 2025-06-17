@@ -1,23 +1,7 @@
-import mongoose, { Document, Schema } from 'mongoose';
+// models/Order.ts
+import mongoose from 'mongoose';
 
-export interface IOrder extends Document {
-  name: string;
-  email: string;
-  phone: string;
-  country: string;
-  state: string;
-  city: string;
-  zip: string;
-  products: {
-    title: string;
-    price: number;
-    quantity: number;
-    image: any;
-  }[];
-  total: number;
-}
-
-const orderSchema = new Schema<IOrder>(
+const OrderSchema = new mongoose.Schema(
   {
     name: String,
     email: String,
@@ -31,7 +15,7 @@ const orderSchema = new Schema<IOrder>(
         title: String,
         price: Number,
         quantity: Number,
-        image: Schema.Types.Mixed, // Use Mixed if `image` varies in shape
+        image: Object,
       },
     ],
     total: Number,
@@ -39,5 +23,4 @@ const orderSchema = new Schema<IOrder>(
   { timestamps: true }
 );
 
-export const Order =
-  mongoose.models.Order || mongoose.model<IOrder>('Order', orderSchema);
+export const Order = mongoose.models.Order || mongoose.model('Order', OrderSchema);
