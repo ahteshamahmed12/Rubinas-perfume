@@ -13,20 +13,22 @@ export async function POST(req: Request) {
 
     const newOrder = await Order.create(body);
 
+    const productsList = Array.isArray(body.products) ? body.products : [];
+
     await resend.emails.send({
       from: 'Your Store <onboarding@resend.dev>',
-      to: 'ahteshamahmed402@gmail.com', // change to admin email
+      to: 'ahteshamahmed402@gmail.com', // Replace with your actual email
       subject: '🛍️ New Order Received',
       html: `
         <h2>New Order from ${body.name}</h2>
-        <p>Email: ${body.email}</p>
-        <p>Phone: ${body.phone}</p>
-        <p>Address: ${body.city}, ${body.state}, ${body.country}, ZIP: ${body.zip}</p>
+        <p><strong>Email:</strong> ${body.email}</p>
+        <p><strong>Phone:</strong> ${body.phone}</p>
+        <p><strong>Address:</strong> ${body.city}, ${body.state}, ${body.country}, ZIP: ${body.zip}</p>
         <h3>Products:</h3>
         <ul>
-          ${body.products.map((p: any) => `<li>${p.title} - $${p.price} x ${p.quantity}</li>`).join('')}
+          ${productsList.map((p: any) => `<li>${p.title} - $${p.price} x ${p.quantity}</li>`).join('')}
         </ul>
-        <p><strong>Total:</strong> $${body.total.toFixed(2)}</p>
+        <p><strong>Total:</strong> $${Number(body.total).toFixed(2)}</p>
       `
     });
 
