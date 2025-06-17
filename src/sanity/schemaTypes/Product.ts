@@ -43,7 +43,7 @@ const product = {
       },
       {
         name: 'stock',
-        title: 'Instock',
+        title: 'stock',
         type: 'string',
       },
       // schemas/product.js

@@ -73,8 +73,8 @@ export default function Shop() {
                   />
                 )}
                 <h3 className="text-xl font-bold text-center mt-2">{product.title}</h3>
-                <p className="text-black font-semibold text-center pt-2">PKR {product.price}</p>
-                <p className="text-black font-semibold text-center pt-2">Quantity: {product.quantity}</p>
+                <p className="text-black font-semibold text-center pt-2">Price: {product.price} PKR</p>
+                <p className="text-black font-semibold text-center pt-2">Quantity: {product.quantity} ml</p>
                 <p className="text-black font-semibold text-center pt-2">Stock: {product.stock}</p>
 
                 <div className="flex justify-center pt-2">

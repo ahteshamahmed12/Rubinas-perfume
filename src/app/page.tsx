@@ -10,7 +10,6 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import FeedBack from "./Components/Feedback";
 
-
 interface Product {
   _id: string;
   title: string;
@@ -34,7 +33,7 @@ export default function Home() {
     const fetchProducts = async () => {
       try {
         const prod: Product[] = await client.fetch(
-          `*[_type == "product"]{
+          `*[_type == "product"][0...3]{
             _id,
             title,
             description,
@@ -45,11 +44,11 @@ export default function Home() {
             rating,
             quantity,
             stock
-          }`,{
-            props:{
-              revalidate:60
-            } 
-            
+          }`,
+          {
+            props: {
+              revalidate: 60,
+            },
           }
         );
         setProducts(prod);
@@ -70,13 +69,18 @@ export default function Home() {
       ) : (
         <main className="h-full">
           <AnimatedImages />
-          <div className="text-center text-3xl font-serif  font-bold mt-10">OUR PRODUCTS</div>
+          <div className="text-center text-3xl font-serif font-bold mt-10">
+            OUR PRODUCTS
+          </div>
 
           <div className="mt-8 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center gap-6">
             {products.length > 0 ? (
               products.map((list) => (
-                <Link href={`/Products/${list._id}`} key={list._id}>
-                  <div className="bg-white p-4 rounded-md shadow-md hover:scale-105 cursor-pointer transition-transform">
+                <div
+                  key={list._id}
+                  className="bg-white p-4 rounded-md shadow-md hover:scale-105 transition-transform"
+                >
+                  <Link href={`/Products/${list._id}`}>
                     {list.image && (
                       <Image
                         width={400}
@@ -86,12 +90,14 @@ export default function Home() {
                         className="w-full object-cover rounded-md lg:h-[400px] pb-3"
                       />
                     )}
-                    <h3 className="text-xl font-extrabold mt-2 text-center">{list.title}</h3>
+                    <h3 className="text-xl font-extrabold mt-2 text-center">
+                      {list.title}
+                    </h3>
                     <p className="text-black font-semibold text-center pt-2">
                       PKR {list.price}
                     </p>
                     <p className="text-black font-medium text-center pt-1">
-                      Quantity : {list.quantity ?? "N/A"}
+                      Quantity : {list.quantity ?? "N/A"} ml
                     </p>
                     <p className="text-black font-medium text-center pt-1">
                       Stock : {list.stock ?? "N/A"}
@@ -110,56 +116,30 @@ export default function Home() {
                         />
                       ))}
                     </div>
+                  </Link>
 
-                    {/* Add to Cart Button */}
-                    <button
-                      onClick={() => {
-                        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
-
-                        if (cart[list._id]) {
-                          cart[list._id].quantity += 1;
-                        } else {
-                          cart[list._id] = {
-                            ...list,
-                            quantity: 1,
-                          };
-                        }
-
-                        localStorage.setItem("cart", JSON.stringify(cart));
-                        window.dispatchEvent(new Event("cartUpdated"));
-                      }}
-                      className="mt-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 active:scale-95 text-white font-semibold rounded-lg px-10 py-3 shadow-lg transition duration-300 ease-in-out flex justify-center items-center mx-auto max-w-xs w-full sm:max-w-sm"
-                      aria-label={`Add ${list.title} to cart`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9h14l-2-9M10 21a1 1 0 11-2 0 1 1 0 012 0zm8 0a1 1 0 11-2 0 1 1 0 012 0z"
-                        />
-                      </svg>
-                      ADD TO CART
-                    </button>
-                  </div>
-                </Link>
+                  {/* Button to Navigate to Detail Page */}
+                  <Link
+                    href={`/Products/${list._id}`}
+                    className="block mt-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 active:scale-95 text-white font-semibold rounded-lg px-10 py-3 shadow-lg transition duration-300 ease-in-out text-center max-w-xs mx-auto"
+                    aria-label={`View details of ${list.title}`}
+                  >
+                    VIEW & ADD TO CART
+                  </Link>
+                </div>
               ))
             ) : (
               <p>No products found.</p>
             )}
           </div>
-            
-            <div className="mt-5">
-              <FeedBack/>
-            </div>
-         
-          
+
+          <div className="text-center pt-10 pb-10 text-3xl font-serif">
+            <Link href="/Shop">SHOW ALL PRODUCTS</Link>
+          </div>
+
+          <div className="mt-5">
+            <FeedBack />
+          </div>
         </main>
       )}
     </>

@@ -67,7 +67,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
           >
             -
           </button>
-          <span className="text-xl">{quantity}</span>
+          <span className="text-xl">{quantity} </span>
           <button
             onClick={() => setQuantity((q) => q + 1)}
             className="px-3 py-1 border rounded"
@@ -78,7 +78,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
 
         <button
           onClick={handleAddToCart}
-          className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition"
+          className="bg-[#bc4444] text-white px-6 py-3 rounded hover:bg-[#bc2222] transition"
         >
           Add to Cart
         </button>

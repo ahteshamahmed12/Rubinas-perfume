@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // Send email to customer
     await resend.emails.send({
-      from: 'Your Shop <onboarding@resend.dev>'
+      from: 'Your Shop <onboarding@resend.dev>',
       to: email,
       subject: `Order Confirmation - Tracking ID ${trackingId}`,
       html: orderHtml,
