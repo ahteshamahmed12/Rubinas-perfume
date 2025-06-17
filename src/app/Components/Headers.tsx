@@ -58,8 +58,9 @@ const Headers = () => {
           </DropdownMenu>
 
           <h1 className="text-sm font-bold whitespace-nowrap select-none">
-            RUBINA'S FRAGRANCE
+            RUBINA&apos;S FRAGRANCE
           </h1>
+
 
           <div className="flex items-center space-x-2 md:space-x-6">
             <Link href="/search" aria-label="Search" className="hover:text-[#db4444]">
@@ -85,7 +86,7 @@ const Headers = () => {
 
       {/* Desktop Header */}
       <div className="hidden lg:flex items-center justify-between px-10 py-4">
-        <h1 className="text-xl font-bold select-none">RUBINA'S FRAGRANCE</h1>
+        <h1 className="text-xl font-bold select-none"> RUBINA&apos;S FRAGRANCE</h1>
 
         <nav aria-label="Main navigation" className="flex gap-8 font-medium">
           <Link href="/" className="hover:text-[#db4444]">Home</Link>
