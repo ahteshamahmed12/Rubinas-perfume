@@ -1,7 +1,8 @@
-"use client"
+// src/app/Components/ProductDetails/page.tsx
+'use client'
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { urlFor } from '@/sanity/lib/image';
 
@@ -11,11 +12,33 @@ type Product = {
   description: string;
   price: number;
   image: any;
-  quantity:number
+  quantity: number;
 };
 
-const ProductDetails = ({ product }: { product: Product }) => {
+// Temporary static product (replace with dynamic fetch or props later)
+const mockProduct: Product = {
+  _id: '123',
+  title: "Rubina's Signature",
+  description: 'A luxurious fragrance with floral notes.',
+  price: 2999,
+  quantity: 100,
+  image: {
+    // Add your Sanity image reference or dummy fallback
+    _type: 'image',
+    asset: {
+      _ref: 'image-some-id',
+      _type: 'reference'
+    }
+  }
+};
+
+const ProductDetailsPage = () => {
   const [quantity, setQuantity] = useState(1);
+  const product = mockProduct;
+
+  useEffect(() => {
+    // You can add logic here to fetch product details based on route param
+  }, []);
 
   const handleAddToCart = () => {
     const cartPromise = new Promise<void>((resolve, reject) => {
@@ -46,7 +69,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
-      {product?.image && (
+      {product.image && (
         <Image
           src={urlFor(product.image).url()}
           alt={product.title}
@@ -61,7 +84,6 @@ const ProductDetails = ({ product }: { product: Product }) => {
         <p className="text-lg mb-4">{product.description}</p>
         <p className="text-2xl font-semibold mb-4">Quantity: {product.quantity} ml</p>
         <p className="text-2xl font-semibold mb-4">Price: {product.price} PKR</p>
-        
 
         <div className="flex items-center gap-4 mb-6">
           <button
@@ -70,7 +92,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
           >
             -
           </button>
-          <span className="text-xl">{quantity} </span>
+          <span className="text-xl">{quantity}</span>
           <button
             onClick={() => setQuantity((q) => q + 1)}
             className="px-3 py-1 border rounded"
@@ -90,4 +112,4 @@ const ProductDetails = ({ product }: { product: Product }) => {
   );
 };
 
-export default ProductDetails;
+export default ProductDetailsPage;
