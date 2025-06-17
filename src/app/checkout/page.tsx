@@ -112,8 +112,8 @@ export default function CheckoutPage() {
                 <Image
                   src={urlFor(item.image).width(80).url()}
                   alt={item.title}
-                  width={80}
-                  height={80}
+                  width={150}
+                  height={150}
                   className="rounded"
                 />
               )}
