@@ -14,7 +14,7 @@ type Product = {
   quantity:number
 };
 
-const ProductDetails = ({ product }: { product: Product }) => {
+function ProductDetails({ product }: { product: Product; }) {
   const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = () => {
@@ -52,8 +52,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
           alt={product.title}
           width={400}
           height={400}
-          className="rounded-xl hover:scale-105 transition-transform duration-300"
-        />
+          className="rounded-xl hover:scale-105 transition-transform duration-300" />
       )}
 
       <div>
@@ -61,7 +60,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
         <p className="text-lg mb-4">{product.description}</p>
         <p className="text-2xl font-semibold mb-4">Quantity: {product.quantity} ml</p>
         <p className="text-2xl font-semibold mb-4">Price: {product.price} PKR</p>
-        
+
 
         <div className="flex items-center gap-4 mb-6">
           <button
@@ -88,6 +87,6 @@ const ProductDetails = ({ product }: { product: Product }) => {
       </div>
     </div>
   );
-};
+}
 
 export default ProductDetails;
