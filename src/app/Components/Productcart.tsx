@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Heart, HeartOff } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
+import Image from 'next/image';
 
 interface Product {
   _id: string;
@@ -55,7 +56,7 @@ export default function ProductCard({ product }: Props) {
 
   return (
     <div className="border rounded p-4 relative">
-      <img src={product.image} alt={product.name} className="w-full h-40 object-cover" />
+      <Image src={product.image} alt={product.name} className="w-full h-40 object-cover" />
       <h2 className="mt-2 font-bold">{product.name}</h2>
       <p>${product.price.toFixed(2)}</p>
 

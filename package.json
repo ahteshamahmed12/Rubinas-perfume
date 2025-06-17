@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "scripts": {
+  "vercel-build": "npm install --legacy-peer-deps && next build"
+}
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.7.2",

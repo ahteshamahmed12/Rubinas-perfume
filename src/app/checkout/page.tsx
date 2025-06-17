@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
+import Image from 'next/image';
+import { urlFor } from '@/sanity/lib/image';
 export default function CheckoutPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -64,6 +65,15 @@ export default function CheckoutPage() {
           <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
           {orderItems.map((item, idx) => (
             <div key={idx} className="p-4 border mb-2 rounded-lg bg-slate-50">
+              {item.image && (
+                                <Image
+                                  src={urlFor(item.image).width(300).url()}
+                                  alt={item.title}
+                                  width={150}
+                                  height={150}
+                                  className="rounded-lg object-cover"
+                                />
+                              )}
               <h3 className="font-bold text-lg">{item.title}</h3>
               <p>Price: PKR {item.price}</p>
               <p>Quantity: {item.quantity}</p>

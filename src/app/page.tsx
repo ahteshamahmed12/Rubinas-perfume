@@ -133,9 +133,13 @@ export default function Home() {
             )}
           </div>
 
-          <div className="text-center pt-10 pb-10 text-3xl font-serif">
-            <Link href="/Shop">SHOW ALL PRODUCTS</Link>
-          </div>
+          <div className="px-4 pt-10 pb-10 text-center">
+  <Link href="/Shop" passHref>
+    <div className="text-3xl font-serif border border-[#db4444] rounded-sm bg-[#db4444] text-white py-4 cursor-pointer transition-all duration-300 hover:bg-white hover:text-[#db4444] hover:border-[#db4444]">
+      SHOW ALL PRODUCTS
+    </div>
+  </Link>
+</div>
 
           <div className="mt-5">
             <FeedBack />

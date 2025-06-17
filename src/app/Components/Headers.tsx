@@ -65,19 +65,17 @@ const Headers = () => {
             <Link href="/search" aria-label="Search" className="hover:text-[#db4444]">
               <Search className="w-5 h-5" />
             </Link>
-
-            <Link href="/wishlist" aria-label="Wishlist" className="hover:text-[#db4444]">
-              <Heart className="w-5 h-5" />
-            </Link>
+             
+            
 
             <Link href="/cart" aria-label="Cart" className="relative hover:text-[#db4444]">
               <ShoppingCart className="w-5 h-5" />
-              <span
+              <div
                 aria-live="polite"
                 className="absolute -top-1 -right-2 w-4 h-4 bg-[#db4444] text-black text-[10px] font-bold flex items-center justify-center rounded-full pointer-events-none"
               >
                 <CartIndicator />
-              </span>
+              </div>
             </Link>
 
             <UserMenu />
@@ -99,8 +97,8 @@ const Headers = () => {
         <div className="flex items-center gap-6">
           
 
-          <Link href="/wishlist" aria-label="Wishlist" className="hover:text-[#db4444]">
-            <Heart className="w-5 h-5" />
+          <Link href={"/Shop"} aria-label='Shop' className='relative hover:text-[#db4444] '>
+          <Search/>
           </Link>
 
           <Link href="/cart" aria-label="Cart" className="relative hover:text-[#db4444]">

@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Send email to shop owner
     await resend.emails.send({
       from: 'Your Shop <onboarding@resend.dev>',
-      to: 'shamsuddinmuhammad441@gmail.com', // replace with shop owner email
+      to: 'ahteshamahmed402@gmail.com', // replace with shop owner email
       subject: `New Order from ${name}`,
       html: orderHtml,
     });
