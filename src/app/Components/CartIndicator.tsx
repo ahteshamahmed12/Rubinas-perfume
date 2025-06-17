@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 function CartIndicator() {
   const [cartCount, setCartCount] = useState(0);
+  const [hasMounted, setHasMounted] = useState(false);
 
   const updateCartCount = () => {
     const cart = JSON.parse(localStorage.getItem('cart') || '{}');
@@ -13,20 +14,24 @@ function CartIndicator() {
   };
 
   useEffect(() => {
+    setHasMounted(true); // Only render UI after mount
     updateCartCount();
 
-    // Custom event from add-to-cart logic
-    window.addEventListener('cartUpdated', updateCartCount);
+    const handler = () => {
+      updateCartCount();
+    };
+
+    window.addEventListener('cartUpdated', handler);
 
     return () => {
-      window.removeEventListener('cartUpdated', updateCartCount);
+      window.removeEventListener('cartUpdated', handler);
     };
   }, []);
 
-  if (cartCount === 0) return null;
+  if (!hasMounted || cartCount === 0) return null;
 
   return (
-    <div className="absolute   bg-red-500 text-white rounded-full text-xs px-2 py-0.5">
+    <div className="absolute bg-red-500 text-white rounded-full text-xs px-2 py-0.5">
       {cartCount}
     </div>
   );

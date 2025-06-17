@@ -11,6 +11,7 @@ type Product = {
   description: string;
   price: number;
   image: any;
+  quantity:number
 };
 
 const ProductDetails = ({ product }: { product: Product }) => {
@@ -58,7 +59,9 @@ const ProductDetails = ({ product }: { product: Product }) => {
       <div>
         <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
         <p className="text-lg mb-4">{product.description}</p>
-        <p className="text-2xl font-semibold mb-4">${product.price}</p>
+        <p className="text-2xl font-semibold mb-4">Quantity: {product.quantity} ml</p>
+        <p className="text-2xl font-semibold mb-4">Price: {product.price} PKR</p>
+        
 
         <div className="flex items-center gap-4 mb-6">
           <button
@@ -78,7 +81,7 @@ const ProductDetails = ({ product }: { product: Product }) => {
 
         <button
           onClick={handleAddToCart}
-          className="bg-[#bc4444] text-white px-6 py-3 rounded hover:bg-[#bc2222] transition"
+          className="bg-[#bc4444] text-white px-12 py-4 rounded hover:bg-[#bc2222] transition"
         >
           Add to Cart
         </button>
