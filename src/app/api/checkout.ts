@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Resend } from 'resend';
+import connectToDatabase from '../../../db';
+import { Order } from '../../../model/Order';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -7,6 +9,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { name, email, address, houseNumber, products, total } = req.body;
+
+  if (!name || !email || !products?.length) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
 
   const trackingId = Math.random().toString(36).substr(2, 9).toUpperCase();
 
@@ -27,7 +33,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   `;
 
   try {
-    // Send email to customer
+    await connectToDatabase();
+
+    // Save to MongoDB
+    await Order.create({
+      name,
+      email,
+      address,
+      houseNumber,
+      products,
+      total,
+      trackingId,
+    });
+
+    // Send emails
     await resend.emails.send({
       from: 'Your Shop <onboarding@resend.dev>',
       to: email,
@@ -35,10 +54,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       html: orderHtml,
     });
 
-    // Send email to shop owner
     await resend.emails.send({
       from: 'Your Shop <onboarding@resend.dev>',
-      to: 'ahteshamahmed402@gmail.com', // replace with shop owner email
+      to: 'ahteshamahmed402@gmail.com',
       subject: `New Order from ${name}`,
       html: orderHtml,
     });
@@ -46,6 +64,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json({ success: true, trackingId });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Email sending failed.' });
+    res.status(500).json({ error: 'Order processing failed.' });
   }
 }

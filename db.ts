@@ -7,39 +7,37 @@ if (!MONGODB_URI) {
 }
 
 interface MongooseCache {
-  conn: mongoose.Connection | null;
-  promise: Promise<mongoose.Connection> | null;
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
 }
 
 declare global {
   var mongooseCache: MongooseCache | undefined;
 }
 
-let cached: MongooseCache = global.mongooseCache || { conn: null, promise: null };
+let cached = global.mongooseCache || { conn: null, promise: null };
 
-export default async function connectToDatabase(): Promise<mongoose.Connection> {
-  if (cached.conn) {
-    return cached.conn;
-  }
+export default async function connectToDatabase(): Promise<typeof mongoose> {
+  if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false, // usually false for better error handling
-      maxPoolSize: 10        // <-- Corrected option here
+      bufferCommands: false,
+      maxPoolSize: 10,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongooseInstance) => mongooseInstance.connection);
+    cached.promise = mongoose.connect(MONGODB_URI as string, opts);
   }
 
   try {
     cached.conn = await cached.promise;
-    console.log("MongoDB connected");
+    global.mongooseCache = cached;
+    console.log("✅ MongoDB connected");
+    return cached.conn;
   } catch (error) {
     cached.promise = null;
-    console.error("MongoDB connection error:", error);
+    console.error("❌ MongoDB connection error:", error);
     throw error;
   }
-
-  return cached.conn;
-  
 }
+

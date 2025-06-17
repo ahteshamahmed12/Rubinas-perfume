@@ -3,12 +3,16 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
+
 export default function CheckoutPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    address: '',
-    houseNumber: '',
+    phone: '',
+    country: 'PAkistan',
+    city: '',
+    state: '',
+    zip: '',
   });
 
   const [orderItems, setOrderItems] = useState<any[]>([]);
@@ -19,9 +23,12 @@ export default function CheckoutPage() {
     setOrderItems(order);
   }, []);
 
-  const total = orderItems.reduce((acc, item) => acc + item.price * item.quantity + 200, 0);
+  const subtotal = orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const shipping = 200;
+  const discount = 0;
+  const total = subtotal + shipping - discount;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -35,61 +42,112 @@ export default function CheckoutPage() {
       total,
     };
 
-    const res = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    const result = await res.json();
+      const result = await res.json();
 
-    if (res.ok) {
-      setStatus(`✅ Order placed! Tracking ID: ${result.trackingId}`);
-      localStorage.removeItem('order');
-    } else {
-      setStatus('❌ Failed to place order.');
+      if (res.ok) {
+        setStatus(`✅ Order placed! Tracking ID: ${result.trackingId}`);
+        localStorage.removeItem('order');
+      } else {
+        setStatus('❌ Failed to place order.');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus('❌ Something went wrong.');
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 border rounded-lg shadow bg-white">
-      <h1 className="text-2xl font-semibold mb-6 text-center">Checkout</h1>
+    <div className="max-w-6xl mx-auto p-4 grid lg:grid-cols-2 gap-10 mt-10">
+      {/* Left Side - Form */}
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow border">
+        <h1 className="text-2xl font-semibold">Checkout</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input name="name" onChange={handleChange} placeholder="Full Name" required className="w-full border p-2 rounded" />
-        <input name="email" type="email" onChange={handleChange} placeholder="Email" required className="w-full border p-2 rounded" />
-        <input name="address" onChange={handleChange} placeholder="Address" required className="w-full border p-2 rounded" />
-        <input name="houseNumber" onChange={handleChange} placeholder="House Number" required className="w-full border p-2 rounded" />
-
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
-          {orderItems.map((item, idx) => (
-            <div key={idx} className="p-4 border mb-2 rounded-lg bg-slate-50">
-              {item.image && (
-                                <Image
-                                  src={urlFor(item.image).width(300).url()}
-                                  alt={item.title}
-                                  width={150}
-                                  height={150}
-                                  className="rounded-lg object-cover"
-                                />
-                              )}
-              <h3 className="font-bold text-lg">{item.title}</h3>
-              <p>Price: PKR {item.price}</p>
-              <p>Quantity: {item.quantity}</p>
-              <p>Delivery Charges: PKR 200</p>
-              <p className="font-semibold">Subtotal: PKR {(item.price * item.quantity + 200).toFixed(2)}</p>
-            </div>
-          ))}
-          <h3 className="text-lg font-bold mt-4">Total: PKR {total.toFixed(2)}</h3>
+        <div className="flex gap-4">
+          <button type="button" className="w-1/2 border p-2 rounded bg-blue-100 text-blue-700 font-medium">Delivery</button>
+          
         </div>
 
+        <input name="name" onChange={handleChange} placeholder="Full Name" required className="w-full border p-2 rounded" />
+        <input name="email" type="email" onChange={handleChange} placeholder="Email Address" required className="w-full border p-2 rounded" />
+        <input name="phone" type="tel" onChange={handleChange} placeholder="Phone Number" required className="w-full border p-2 rounded" />
+
+        <select name="country" onChange={handleChange} className="w-full border p-2 rounded">
+          
+          <option>Pakistan</option>
+          
+        </select>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input name="city" onChange={handleChange} placeholder="City" required className="border p-2 rounded" />
+          <input name="state" onChange={handleChange} placeholder="State" required className="border p-2 rounded" />
+          <input name="zip" onChange={handleChange} placeholder="ZIP Code" required className="border p-2 rounded" />
+        </div>
+
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" required />
+          I have read and agree to the Terms and Conditions.
+        </label>
+
         <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full">
-          Place Order
+          Order Now
         </button>
+
+        {status && <p className="mt-2 text-center text-sm font-medium">{status}</p>}
       </form>
 
-      {status && <p className="mt-4 text-center font-medium">{status}</p>}
+      {/* Right Side - Summary */}
+      <div className="bg-gray-50 p-6 rounded shadow border">
+        <h2 className="text-xl font-semibold mb-4">Review your cart</h2>
+        <div className="space-y-4">
+          {orderItems.map((item, idx) => (
+            <div key={idx} className="flex items-center gap-4">
+              {item.image && (
+                <Image
+                  src={urlFor(item.image).width(80).url()}
+                  alt={item.title}
+                  width={80}
+                  height={80}
+                  className="rounded"
+                />
+              )}
+              <div>
+                <h3 className="font-medium">{item.title}</h3>
+                <p>PKR {item.price.toFixed(2)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4">
+          <div className="flex justify-between text-sm mb-1">
+            <span>Subtotal</span>
+            <span>PKR {subtotal.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-sm mb-1">
+            <span>Shipping</span>
+            <span>PKR {shipping.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-sm mb-1">
+            <span>Discount</span>
+            <span className="text-green-600">-PKR {discount.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between font-bold text-base mt-2">
+            <span>Total</span>
+            <span>PKR {total.toFixed(2)}</span>
+          </div>
+        </div>
+
+        <p className="text-xs text-gray-500 mt-4">
+          🔒 Secure Checkout – SSL Encrypted. Your personal and financial information is safe.
+        </p>
+      </div>
     </div>
   );
 }
