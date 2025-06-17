@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from 'next/image';
 import { useState } from 'react';
@@ -11,10 +11,10 @@ type Product = {
   description: string;
   price: number;
   image: any;
-  quantity:number
+  quantity: number;
 };
 
-function ProductDetails({ product }: { product: Product; }) {
+export default function ProductDetails({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = () => {
@@ -52,7 +52,8 @@ function ProductDetails({ product }: { product: Product; }) {
           alt={product.title}
           width={400}
           height={400}
-          className="rounded-xl hover:scale-105 transition-transform duration-300" />
+          className="rounded-xl hover:scale-105 transition-transform duration-300"
+        />
       )}
 
       <div>
@@ -61,7 +62,6 @@ function ProductDetails({ product }: { product: Product; }) {
         <p className="text-2xl font-semibold mb-4">Quantity: {product.quantity} ml</p>
         <p className="text-2xl font-semibold mb-4">Price: {product.price} PKR</p>
 
-
         <div className="flex items-center gap-4 mb-6">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -69,7 +69,7 @@ function ProductDetails({ product }: { product: Product; }) {
           >
             -
           </button>
-          <span className="text-xl">{quantity} </span>
+          <span className="text-xl">{quantity}</span>
           <button
             onClick={() => setQuantity((q) => q + 1)}
             className="px-3 py-1 border rounded"
@@ -88,5 +88,3 @@ function ProductDetails({ product }: { product: Product; }) {
     </div>
   );
 }
-
-export default ProductDetails;
