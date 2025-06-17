@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { client } from "@/sanity/lib/client";
-import ProductDetails from "@/app/Components/ProductDetails/page";
+import ProductDetails from "@/app/ProductDetails/page";
 import ProductTabs from "@/app/Components/ProductTabs";
 
 const Page = ({ params }: { params: { id: string } }) => {
