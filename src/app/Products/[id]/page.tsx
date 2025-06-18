@@ -16,7 +16,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [fetchProduct]);
 
   if (!product) return <p>Loading...</p>;
 

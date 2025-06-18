@@ -1,26 +1,21 @@
-// models/Order.ts
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const OrderSchema = new mongoose.Schema(
-  {
-    name: String,
-    email: String,
-    phone: String,
-    country: String,
-    state: String,
-    city: String,
-    zip: String,
-    products: [
-      {
-        title: String,
-        price: Number,
-        quantity: Number,
-        image: Object,
-      },
-    ],
-    total: Number,
-  },
-  { timestamps: true }
-);
+const orderSchema = new Schema({
+  name: String,
+  email: String,
+  phone: String,
+  city: String,
+  state: String,
+  country: String,
+  zip: String,
+  products: [
+    {
+      title: String,
+      price: Number,
+      quantity: Number,
+    },
+  ],
+  total: Number,
+}, { timestamps: true });
 
-export const Order = mongoose.models.Order || mongoose.model('Order', OrderSchema);
+export const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
