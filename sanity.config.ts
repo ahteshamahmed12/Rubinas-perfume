@@ -13,6 +13,15 @@ import {apiVersion, dataset, projectId} from './src/sanity/env'
 import {schema} from './src/sanity/schemaTypes'
 import {structure} from './src/sanity/structure'
 
+export const sanityConfig = {
+  projectId: process.env.SANITY_PROJECT_ID!,
+  dataset: process.env.SANITY_DATASET!,
+  apiVersion: '2024-06-01',
+  useCdn: false,
+  token: process.env.SANITY_API_TOKEN,
+};
+
+
 export default defineConfig({
   basePath: '/studio',
   projectId,
