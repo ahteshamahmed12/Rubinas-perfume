@@ -9,10 +9,12 @@ export default function CheckoutPage() {
     name: '',
     email: '',
     phone: '',
-    country: 'PAkistan',
+    country: 'Pakistan',
     city: '',
     state: '',
     zip: '',
+    address: '',
+    houseNumber: '',
   });
 
   const [orderItems, setOrderItems] = useState<any[]>([]);
@@ -71,7 +73,6 @@ export default function CheckoutPage() {
 
         <div className="flex gap-4">
           <button type="button" className="w-1/2 border p-2 rounded bg-blue-100 text-blue-700 font-medium">Delivery</button>
-          
         </div>
 
         <input name="name" onChange={handleChange} placeholder="Full Name" required className="w-full border p-2 rounded" />
@@ -79,9 +80,7 @@ export default function CheckoutPage() {
         <input name="phone" type="tel" onChange={handleChange} placeholder="Phone Number" required className="w-full border p-2 rounded" />
 
         <select name="country" onChange={handleChange} className="w-full border p-2 rounded">
-          
           <option>Pakistan</option>
-          
         </select>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -89,6 +88,9 @@ export default function CheckoutPage() {
           <input name="state" onChange={handleChange} placeholder="State" required className="border p-2 rounded" />
           <input name="zip" onChange={handleChange} placeholder="ZIP Code" required className="border p-2 rounded" />
         </div>
+
+        <input name="address" onChange={handleChange} placeholder="Street Address" required className="w-full border p-2 rounded" />
+        <input name="houseNumber" onChange={handleChange} placeholder="House Number" required className="w-full border p-2 rounded" />
 
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" required />
@@ -120,6 +122,7 @@ export default function CheckoutPage() {
               <div>
                 <h3 className="font-medium">{item.title}</h3>
                 <p>PKR {item.price.toFixed(2)}</p>
+                <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
               </div>
             </div>
           ))}

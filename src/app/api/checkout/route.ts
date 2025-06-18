@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import connectToDatabase from '../../../../db';// adjust path if needed
-import { Order } from '../../../../model/Order';    // Mongoose schema
+import connectToDatabase from '../../../../db'; // adjust path if needed
+import { Order } from '../../../../model/Order'; // Mongoose schema
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -17,20 +17,36 @@ export async function POST(req: Request) {
 
     const trackingId = Math.floor(100000 + Math.random() * 900000).toString();
 
+    // 🧹 Only pick needed fields from each product
+    const cleanedProducts = body.products.map((product: any) => ({
+      id: product._id || product.id || '',     // in case it comes from Sanity
+      title: product.title,
+      price: product.price,
+      quantity: product.quantity,
+    }));
+
     const newOrder = new Order({
-      ...body,
+      name: body.name,
+      email: body.email,
+      address: body.address,
+      houseNumber: body.houseNumber,
+      products: cleanedProducts,
+      total: body.total,
       trackingId,
     });
 
     await newOrder.save();
     console.log('✅ Order saved');
 
-    // Send confirmation email
     const emailResponse = await resend.emails.send({
       from: 'Store <onboarding@resend.dev>',
       to: body.email,
       subject: 'Your Order Confirmation',
-      html: `<p>Thank you for your order, ${body.name}!</p><p>Your tracking ID: ${trackingId}</p>`,
+      html: `
+        <p>Thank you for your order, ${body.name}!</p>
+        <p>Your tracking ID: <strong>${trackingId}</strong></p>
+        <p>Total: <strong>PKR ${body.total}</strong></p>
+      `,
     });
 
     console.log('📧 Email sent:', emailResponse);
