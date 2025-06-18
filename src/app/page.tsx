@@ -47,7 +47,7 @@ export default function Home() {
           }`,
           {
             props: {
-              revalidate: 60,
+              revalidate: 30,
             },
           }
         );

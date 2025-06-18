@@ -10,12 +10,14 @@ const orderSchema = new Schema({
   zip: String,
   products: [
     {
+      _id:String,
       title: String,
       price: Number,
       quantity: Number,
     },
   ],
   total: Number,
+  trackingId: String,
 }, { timestamps: true });
 
 export const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);

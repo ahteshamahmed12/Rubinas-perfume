@@ -1,76 +1,44 @@
-// app/api/checkout/route.ts
-
 import { NextResponse } from 'next/server';
-import connectToDatabase from '../../../../db';
-import { Order } from '../../../../model/Order';
+import connectToDatabase from '../../../../db';// adjust path if needed
+import { Order } from '../../../../model/Order';    // Mongoose schema
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY ?? '');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
+    console.log('🔁 Checkout API called');
+
     const body = await req.json();
+    console.log('📦 Request Body:', body);
 
-    const {
-      name,
-      email,
-      phone,
-      city,
-      state,
-      country,
-      zip,
-      products,
-      total,
-    } = body;
-
-    // Validate required fields
-    if (!name || !email || !phone || !city || !state || !country || !zip || !products?.length || !total) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    // Connect to DB
     await connectToDatabase();
+    console.log('✅ Connected to MongoDB');
 
-    // Create new order
-    const newOrder = await Order.create({
-      name,
-      email,
-      phone,
-      city,
-      state,
-      country,
-      zip,
-      products,
-      total,
+    const trackingId = Math.floor(100000 + Math.random() * 900000).toString();
+
+    const newOrder = new Order({
+      ...body,
+      trackingId,
     });
 
-    // Format products list in HTML
-    const productsList = products
-      .map((p: any) => `<li>${p.title} - PKR ${p.price} x ${p.quantity}</li>`)
-      .join('');
+    await newOrder.save();
+    console.log('✅ Order saved');
 
-    // Send order email
-    await resend.emails.send({
-      from: 'Your Store <orders@yourdomain.com>', // 🔁 Replace with verified sender from Resend
-      to: 'ahteshamahmed402@gmail.com', // or use `email` if you want to notify customer too
-      subject: '🛍️ New Order Received',
-      html: `
-        <h2>New Order from ${name}</h2>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Address:</strong> ${city}, ${state}, ${country} - ${zip}</p>
-        <h3>Products:</h3>
-        <ul>${productsList}</ul>
-        <p><strong>Total:</strong> PKR ${Number(total).toFixed(2)}</p>
-      `
+    // Send confirmation email
+    const emailResponse = await resend.emails.send({
+      from: 'Store <onboarding@resend.dev>',
+      to: body.email,
+      subject: 'Your Order Confirmation',
+      html: `<p>Thank you for your order, ${body.name}!</p><p>Your tracking ID: ${trackingId}</p>`,
     });
 
-    return NextResponse.json({ success: true, trackingId: newOrder._id });
-  } catch (error: any) {
-    console.error('Checkout error:', error.message || error);
-    return NextResponse.json(
-      { error: 'Failed to place order. Please try again later.' },
-      { status: 500 }
-    );
+    console.log('📧 Email sent:', emailResponse);
+
+    return NextResponse.json({ success: true, trackingId });
+
+  } catch (error) {
+    console.error('❌ Checkout Error:', error);
+    return NextResponse.json({ error: 'Failed to place order.' }, { status: 500 });
   }
 }

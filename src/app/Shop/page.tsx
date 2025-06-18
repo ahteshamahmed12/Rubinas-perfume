@@ -44,7 +44,7 @@ export default function Shop() {
           }`
       );
       setProducts(data);
-      setAllProducts(data); // Save for fallback
+      setAllProducts(data); 
     };
 
     fetchProducts();
