@@ -63,7 +63,7 @@ const Headers = () => {
 
 
           <div className="flex items-center space-x-2 md:space-x-6">
-            <Link href="/search" aria-label="Search" className="hover:text-[#db4444]">
+            <Link href="/Shop" aria-label="Search" className="hover:text-[#db4444]">
               <Search className="w-5 h-5" />
             </Link>
              
