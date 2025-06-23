@@ -62,8 +62,20 @@ const product = {
       ],
     },
   ],
+},
+{
+  name: 'gender',
+  title: 'Gender',
+  type: 'string',
+  options: {
+    list: [
+      { title: 'Men', value: 'men' },
+      { title: 'Women', value: 'women' },
+      
+    ],
+    layout: 'radio' // or 'dropdown'
+  }
 }
-
       
       
     ],

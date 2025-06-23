@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image';
+import cartIcon from '@/public/cart.png';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { urlFor } from '@/sanity/lib/image';
@@ -12,6 +13,8 @@ type Product = {
   price: number;
   image: any;
   quantity: number;
+  gender: string;
+  stock:string
 };
 
 export default function ProductDetails({ product }: { product: Product }) {
@@ -45,24 +48,30 @@ export default function ProductDetails({ product }: { product: Product }) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-14 p-6">
       {product?.image && (
         <Image
           src={urlFor(product.image).url()}
           alt={product.title}
-          width={400}
-          height={400}
+          width={450}
+          height={450}
           className="rounded-xl hover:scale-105 transition-transform duration-300"
         />
       )}
 
       <div>
+  
         <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
         <p className="text-lg mb-4">{product.description}</p>
-        <p className="text-2xl font-semibold mb-4">Quantity: {product.quantity} ml</p>
+        <p className='pb-6 text-3xl  font-bold pt-4'>DETAILS</p>
+        <p className="text-2xl font-semibold mb-4">For: {product.gender.charAt(0).toUpperCase() + product.gender.slice(1)} </p>
+        <p className="text-2xl font-semibold mb-4">Stock: {product.stock} </p>
         <p className="text-2xl font-semibold mb-4">Price: {product.price} PKR</p>
+        <p className="text-2xl font-semibold mb-4">Quantity: {product.quantity} ml</p>
+        
+        <p className='pb-6 text-3xl  font-bold pt-4'>SET PRODUCT QUANTITY</p>
+        <div className="flex items-center gap-4 mb-10">
 
-        <div className="flex items-center gap-4 mb-6">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             className="px-3 py-1 border rounded"

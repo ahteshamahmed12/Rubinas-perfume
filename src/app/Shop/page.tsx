@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaStar } from 'react-icons/fa';
 import Searchs from '../Components/Searchs';
+import product from '@/sanity/schemaTypes/Product';
 
 interface Product {
   quantity:number;
@@ -21,6 +22,7 @@ interface Product {
   price: number;
   type: string;
   rating?: number;
+  gender:string;
 }
 
 export default function Shop() {
@@ -40,7 +42,8 @@ export default function Shop() {
             type,
             rating,
             quantity,
-            stock
+            stock,
+            gender,
           }`
       );
       setProducts(data);
@@ -49,6 +52,8 @@ export default function Shop() {
 
     fetchProducts();
   }, []);
+
+  
 
   return (
     <div className="px-4 py-10">
@@ -76,6 +81,7 @@ export default function Shop() {
                 <p className="text-black font-semibold text-center pt-2">Price: {product.price} PKR</p>
                 <p className="text-black font-semibold text-center pt-2">Quantity: {product.quantity} ml</p>
                 <p className="text-black font-semibold text-center pt-2">Stock: {product.stock}</p>
+                <p className="text-black font-semibold text-center pt-2">For: {product.gender}</p>
 
                 <div className="flex justify-center pt-2">
                   {[...Array(5)].map((_, i) => (

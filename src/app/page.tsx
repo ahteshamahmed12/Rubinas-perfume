@@ -23,6 +23,7 @@ interface Product {
   rating?: number;
   quantity: number;
   stock: string;
+  gender: string;
 }
 
 export default function Home() {
@@ -43,7 +44,8 @@ export default function Home() {
             type,
             rating,
             quantity,
-            stock
+            stock,
+            gender
           }`,
           {
             props: {
@@ -102,6 +104,10 @@ export default function Home() {
                     <p className="text-black font-medium text-center pt-1">
                       Stock : {list.stock ?? "N/A"}
                     </p>
+                    <p className="text-black font-medium text-center pt-1">
+                      For : {list.gender.toUpperCase()}
+                    </p>
+                    
 
                     {/* Star Rating */}
                     <div className="flex justify-center pt-2">
