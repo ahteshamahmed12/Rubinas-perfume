@@ -16,9 +16,9 @@ const Footer = () => {
     {
       title: 'LINKS',
       links: [
-        { text: 'Your Order', href: '/order' },
-        { text: 'Your Account', href: '/account' },
-        { text: 'Track Order', href: '/track' },
+        { text: 'Your Order', href: '/checkout' },
+        { text: 'Your Account', href: '/' },
+        { text: 'Track Order', href: '/checkout' },
         { text: 'Wishlist', href: '/wishlist' },
       ],
     },

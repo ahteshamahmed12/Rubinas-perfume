@@ -72,7 +72,7 @@ export default function CheckoutPage() {
         <h1 className="text-2xl font-semibold">Checkout</h1>
 
         <div className="flex gap-4">
-          <button type="button" className="w-1/2 border p-2 rounded bg-blue-100 text-blue-700 font-medium">Delivery</button>
+          <button type="button" className="w-1/2 border p-2 rounded bg-[#bc4444] text-white font-medium">Delivery</button>
         </div>
 
         <input name="name" onChange={handleChange} placeholder="Full Name" required className="w-full border p-2 rounded" />
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
           I have read and agree to the Terms and Conditions.
         </label>
 
-        <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full">
+        <button type="submit" className="bg-[#bc4444] hover:bg-[#bc2222] text-white px-4 py-2 rounded w-full">
           Order Now
         </button>
 
@@ -114,8 +114,8 @@ export default function CheckoutPage() {
                 <Image
                   src={urlFor(item.image).width(80).url()}
                   alt={item.title}
-                  width={150}
-                  height={150}
+                  width={200}
+                  height={200}
                   className="rounded"
                 />
               )}
@@ -139,7 +139,7 @@ export default function CheckoutPage() {
           </div>
           <div className="flex justify-between text-sm mb-1">
             <span>Discount</span>
-            <span className="text-green-600">-PKR {discount.toFixed(2)}</span>
+            <span className="text-[#bc4444]">-PKR {discount.toFixed(2)}</span>
           </div>
           <div className="flex justify-between font-bold text-base mt-2">
             <span>Total</span>
