@@ -7,10 +7,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaStar } from 'react-icons/fa';
 import Searchs from '../Components/Searchs';
-import product from '@/sanity/schemaTypes/Product';
+import { motion } from 'framer-motion'; // ✅ added
 
 interface Product {
-  quantity:number;
+  quantity: number;
   title: string;
   _id: string;
   stock: string;
@@ -22,7 +22,7 @@ interface Product {
   price: number;
   type: string;
   rating?: number;
-  gender:string;
+  gender: string;
 }
 
 export default function Shop() {
@@ -47,21 +47,30 @@ export default function Shop() {
           }`
       );
       setProducts(data);
-      setAllProducts(data); 
+      setAllProducts(data);
     };
 
     fetchProducts();
   }, []);
 
-  
-
   return (
     <div className="px-4 py-10">
-      <Searchs onSearchResults={(results) => {
-        setProducts(results.length > 0 ? results : allProducts);
-      }} />
+      <Searchs
+        onSearchResults={(results) => {
+          setProducts(results.length > 0 ? results : allProducts);
+        }}
+      />
 
-      <div className="text-center text-3xl font-bold mt-10">OUR PRODUCTS</div>
+     
+      <motion.h2
+        className="text-center text-3xl font-bold mt-10"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        viewport={{ once: true }}
+      >
+        OUR PRODUCTS
+      </motion.h2>
 
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {products.length > 0 ? (
@@ -93,41 +102,42 @@ export default function Shop() {
                     />
                   ))}
                 </div>
+
                 <button
-                      onClick={() => {
-                        const cart = JSON.parse(localStorage.getItem("cart") || "{}");
+                  onClick={() => {
+                    const cart = JSON.parse(localStorage.getItem("cart") || "{}");
 
-                        if (cart[product._id]) {
-                          cart[product._id].quantity += 1;
-                        } else {
-                          cart[product._id] = {
-                            ...product,
-                            quantity: 1,
-                          };
-                        }
+                    if (cart[product._id]) {
+                      cart[product._id].quantity += 1;
+                    } else {
+                      cart[product._id] = {
+                        ...product,
+                        quantity: 1,
+                      };
+                    }
 
-                        localStorage.setItem("cart", JSON.stringify(cart));
-                        window.dispatchEvent(new Event("cartUpdated"));
-                      }}
-                      className="mt-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 active:scale-95 text-white font-semibold rounded-lg px-10 py-3 shadow-lg transition duration-300 ease-in-out flex justify-center items-center mx-auto max-w-xs w-full sm:max-w-sm"
-                      aria-label={`Add ${product.title} to cart`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9h14l-2-9M10 21a1 1 0 11-2 0 1 1 0 012 0zm8 0a1 1 0 11-2 0 1 1 0 012 0z"
-                        />
-                      </svg>
-                      ADD TO CART
-                    </button>
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    window.dispatchEvent(new Event("cartUpdated"));
+                  }}
+                  className="mt-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 active:scale-95 text-white font-semibold rounded-lg px-10 py-3 shadow-lg transition duration-300 ease-in-out flex justify-center items-center mx-auto max-w-xs w-full sm:max-w-sm"
+                  aria-label={`Add ${product.title} to cart`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9h14l-2-9M10 21a1 1 0 11-2 0 1 1 0 012 0zm8 0a1 1 0 11-2 0 1 1 0 012 0z"
+                    />
+                  </svg>
+                  ADD TO CART
+                </button>
               </div>
             </Link>
           ))

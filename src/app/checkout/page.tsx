@@ -112,7 +112,7 @@ export default function CheckoutPage() {
             <div key={idx} className="flex items-center gap-4">
               {item.image && (
                 <Image
-                  src={urlFor(item.image).width(80).url()}
+                  src={urlFor(item.image).width(200).url()}
                   alt={item.title}
                   width={200}
                   height={200}
