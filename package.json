@@ -19,6 +19,7 @@
     "@sanity/client": "^7.6.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.90.0",
+    "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.9.0",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
