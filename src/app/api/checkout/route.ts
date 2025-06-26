@@ -1,5 +1,4 @@
 import { google } from 'googleapis';
-import fs from 'fs';
 import path from 'path';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '../../../../db';
@@ -39,13 +38,10 @@ export async function POST(req: Request) {
     await newOrder.save();
 
     // Save to Google Sheets
-    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT!);
-
-const auth = new google.auth.GoogleAuth({
-  credentials,
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
-
+    const auth = new google.auth.GoogleAuth({
+      keyFile: SERVICE_ACCOUNT_PATH,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
 
     const sheets = google.sheets({ version: 'v4', auth });
     await sheets.spreadsheets.values.append({
