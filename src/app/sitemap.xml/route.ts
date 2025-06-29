@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   // 🔁 Your dynamic product slugs — replace with real ones or fetch from DB
   const products = [
-    "sultan",
-    "legend",
-    "ethanol",
+    "28d230b2-5c92-457a-b2d0-5a38c25a10c1",
+    "19bd087b-0de6-4503-a0aa-0146456048a7",
+    "05f3468c-16e3-40bb-9dd3-e2f825554c30",
     "18c30ed0-9126-4d37-ba5b-484960f874e3",
     "arabian-night"
   ];
