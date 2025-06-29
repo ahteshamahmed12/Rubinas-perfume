@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   keywords: [
     "perfume",
     "fragrance",
-    "Rubina",
+    "Rubinas",
     "buy perfume online",
     "luxury scent",
   ],
