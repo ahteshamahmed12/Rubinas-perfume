@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   // 🔁 Your dynamic product slugs — replace with real ones or fetch from DB
   const products = [
-    "rose-musk",
-    "oud-amber",
-    "white-musk",
+    "sultan",
+    "legend",
+    "ethanol",
     "oud-intense",
     "arabian-night"
   ];
@@ -43,7 +43,7 @@ export async function GET() {
       priority: 0.8,
     },
     {
-      loc: 'https://rubinafragrance.com/contactus',
+      loc: 'https://rubinafragrance.com/ContactUs',
       changefreq: 'yearly',
       priority: 0.5,
     },
