@@ -29,8 +29,7 @@ ${urls
     <changefreq>${url.changefreq}</changefreq>
     <priority>${url.priority}</priority>
     <lastmod>${new Date().toISOString()}</lastmod>
-  </url>
-`
+  </url>`
   )
   .join('')}
 </urlset>`;

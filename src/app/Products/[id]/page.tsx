@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { client } from "@/sanity/lib/client";
 import ProductDetails from "@/app/Components/ProductDetails"; // ✅ Correct
 import ProductTabs from "@/app/Components/ProductTabs";
@@ -7,12 +7,11 @@ import ProductTabs from "@/app/Components/ProductTabs";
 const Page = ({ params }: { params: { id: string } }) => {
   const [product, setProduct] = useState<any>(null);
 
-  const fetchProduct = async () => {
-    const data = await client.fetch(
-      `*[_type == "product" && _id == "${params.id}"][0]`
-    );
+  const fetchProduct = useCallback(async () => {
+    const res = await fetch(`/api/products/${params.id}`);
+    const data = await res.json();
     setProduct(data);
-  };
+  }, [params.id]);
 
   useEffect(() => {
     fetchProduct();
