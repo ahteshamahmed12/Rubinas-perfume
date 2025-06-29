@@ -6,7 +6,7 @@ export async function GET() {
     "sultan",
     "legend",
     "ethanol",
-    "oud-intense",
+    "18c30ed0-9126-4d37-ba5b-484960f874e3",
     "arabian-night"
   ];
 
