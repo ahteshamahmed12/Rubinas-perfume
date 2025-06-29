@@ -18,12 +18,12 @@ export async function GET() {
       priority: 1.0,
     },
     {
-      loc: 'https://rubinafragrance.com/shop',
+      loc: 'https://rubinafragrance.com/Shop',
       changefreq: 'yearly',
       priority: 1.0,
     },
     {
-      loc: 'https://rubinafragrance.com/about',
+      loc: 'https://rubinafragrance.com/AboutUs',
       changefreq: 'yearly',
       priority: 0.8,
     },
