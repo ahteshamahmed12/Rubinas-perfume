@@ -51,7 +51,7 @@ export async function GET() {
 
   // ✅ Dynamic product URLs
   const productUrls = products.map((id) => ({
-    loc: `https://rubinafragrance.com/Product/${id}`,
+    loc: `https://rubinafragrance.com/Products/${id}`,
     changefreq: 'monthly',
     priority: 0.9,
   }));
