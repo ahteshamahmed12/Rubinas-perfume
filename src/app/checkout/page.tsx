@@ -81,6 +81,7 @@ export default function CheckoutPage() {
 
         <select name="country" onChange={handleChange} className="w-full border p-2 rounded">
           <option>Pakistan</option>
+          <option>Pakistan</option>
         </select>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
