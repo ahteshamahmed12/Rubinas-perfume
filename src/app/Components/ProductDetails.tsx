@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import cartIcon from '@/public/cart.png';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { urlFor } from '@/sanity/lib/image';
@@ -12,13 +12,14 @@ type Product = {
   description: string;
   price: number;
   image: any;
-  quantity: number;
+  quantity: number; // this is the product bottle size e.g. 100ml
   gender: string;
-  stock:string
+  stock: string;
 };
 
 export default function ProductDetails({ product }: { product: Product }) {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(1); // user-selected purchase quantity
+  const router = useRouter();
 
   const handleAddToCart = () => {
     const cartPromise = new Promise<void>((resolve, reject) => {
@@ -27,9 +28,9 @@ export default function ProductDetails({ product }: { product: Product }) {
         const index = cart.findIndex((item: any) => item._id === product._id);
 
         if (index > -1) {
-          cart[index].quantity += quantity;
+          cart[index].buyQuantity += quantity; // ✅ Correct key
         } else {
-          cart.push({ ...product, quantity });
+          cart.push({ ...product, buyQuantity: quantity }); // ✅ Correct key
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -42,7 +43,10 @@ export default function ProductDetails({ product }: { product: Product }) {
 
     toast.promise(cartPromise, {
       loading: 'Adding to cart...',
-      success: 'Added to cart!',
+      success: () => {
+        router.push('/cart'); // ✅ Redirect to cart after adding
+        return 'Added to cart!';
+      },
       error: 'Something went wrong.',
     });
   };
@@ -60,18 +64,19 @@ export default function ProductDetails({ product }: { product: Product }) {
       )}
 
       <div>
-  
         <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
         <p className="text-lg mb-4">{product.description}</p>
-        <p className='pb-6 text-3xl  font-bold pt-4'>DETAILS</p>
-        <p className="text-2xl font-semibold mb-4">For: {product.gender.charAt(0).toUpperCase() + product.gender.slice(1)} </p>
-        <p className="text-2xl font-semibold mb-4">Stock: {product.stock} </p>
+
+        <p className="pb-6 text-3xl font-bold pt-4">DETAILS</p>
+        <p className="text-2xl font-semibold mb-4">
+          For: {product.gender.charAt(0).toUpperCase() + product.gender.slice(1)}
+        </p>
+        <p className="text-2xl font-semibold mb-4">Stock: {product.stock}</p>
         <p className="text-2xl font-semibold mb-4">Price: {product.price} PKR</p>
         <p className="text-2xl font-semibold mb-4">Quantity: {product.quantity} ml</p>
-        
-        <p className='pb-6 text-3xl  font-bold pt-4'>SET PRODUCT QUANTITY</p>
-        <div className="flex items-center gap-4 mb-10">
 
+        <p className="pb-6 text-3xl font-bold pt-4">SET PRODUCT QUANTITY</p>
+        <div className="flex items-center gap-4 mb-10">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             className="px-3 py-1 border rounded"

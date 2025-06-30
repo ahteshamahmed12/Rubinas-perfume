@@ -11,14 +11,12 @@ function Cart() {
   const router = useRouter();
   const [products, setproducts] = useState<any[]>([]);
 
-  // ✅ Safely read localStorage cart
   useEffect(() => {
     try {
       const cartData = localStorage.getItem("cart");
       if (cartData) {
         const cart = JSON.parse(cartData);
-        const items: any[] = Object.values(cart);
-        setproducts(items);
+        setproducts(cart);
       }
     } catch (error) {
       console.error("Failed to parse cart:", error);
@@ -30,7 +28,6 @@ function Cart() {
     }
   }, []);
 
-  // ✅ Navigate to Checkout
   const proceedToCheckout = () => {
     if (products.length > 0) {
       localStorage.setItem("order", JSON.stringify(products));
@@ -39,7 +36,6 @@ function Cart() {
     }
   };
 
-  // ✅ Toast notification on remove
   const notify = () => {
     toast.error("Item removed successfully", {
       position: "bottom-right",
@@ -54,7 +50,6 @@ function Cart() {
     });
   };
 
-  // ✅ Remove item from cart
   const removeItem = (id: any) => {
     const updatedCart = products.filter((item) => item._id !== id);
     setproducts(updatedCart);
@@ -66,9 +61,8 @@ function Cart() {
     notify();
   };
 
-  // ✅ Safe total calculation
   const total = products.reduce(
-    (acc, item) => acc + (item.price || 0) * (item.quantity || 1),
+    (acc, item) => acc + (item.price || 0) * (item.buyQuantity || 1),
     0
   );
 
@@ -86,7 +80,6 @@ function Cart() {
               className="p-4 flex justify-between items-center border-b flex-wrap gap-4"
             >
               <div className="flex gap-4 items-start">
-                {/* ✅ Product Image */}
                 {item.image && typeof item.image === "object" && (
                   <Image
                     src={urlFor(item.image).width(300).url()}
@@ -97,17 +90,16 @@ function Cart() {
                   />
                 )}
 
-                {/* ✅ Product Info */}
                 <div>
                   <h2 className="text-lg font-semibold">{item.title}</h2>
                   <p className="text-[#24224f]">Price: PKR {item.price}</p>
                   <p className="text-[#24224f]">
-                    Quantity: {item.quantity || 1}
+                    Quantity: {item.buyQuantity || 1}
                   </p>
                   <p className="text-[#24224f]">Delivery Charges: PKR 200</p>
                   <p className="text-[#24224f] font-bold">
                     Subtotal: PKR{" "}
-                    {(item.price * (item.quantity || 1) + 200).toFixed(2)}
+                    {(item.price * (item.buyQuantity || 1) + 200).toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -123,7 +115,6 @@ function Cart() {
           ))}
         </div>
 
-        {/* ✅ Bottom section */}
         {products.length > 0 ? (
           <div className="mt-6 flex justify-between items-center border-t pt-4 flex-wrap gap-4">
             <h2 className="text-xl font-bold">Total: PKR {total + 200}</h2>
@@ -139,7 +130,6 @@ function Cart() {
         )}
       </div>
 
-      {/* ✅ Toasts container */}
       <ToastContainer />
     </div>
   );
