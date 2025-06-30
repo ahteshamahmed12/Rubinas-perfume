@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { FaFacebook, FaInstagram } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 
 const Footer = () => {
   const footerSections = [
@@ -67,6 +67,20 @@ const Footer = () => {
             >
               <FaInstagram className="text-white w-4 h-4" />
             </Link>
+
+            <Link
+              href="https://api.whatsapp.com/send?phone=923702917350&text=Hello%20Rubina's%20Fragrance"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="whatsapp"
+              className="inline-flex items-center justify-center bg-[#25d366] w-7 h-7 rounded-full hover:scale-110 transition-transform duration-300"
+            >
+              <FaWhatsapp className="text-white w-4 h-4" />
+            </Link>
+
+            
+
+            
           </div>
         </div>
 
