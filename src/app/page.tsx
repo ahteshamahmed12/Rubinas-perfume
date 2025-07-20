@@ -72,8 +72,8 @@ export default function Home() {
       ) : (
         <main className="h-full">
           <AnimatedImages />
-
-          {/* Animated Heading */}
+          
+                    {/* Corrected layout */}
           <motion.h2
             className="text-center text-3xl font-serif font-bold mt-10"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -81,8 +81,18 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            OUR PRODUCTS
           </motion.h2>
+          
+          {/* Move the video below the heading */}
+          <div className="max-w-3xl mx-auto px-4 my-6">
+            <h1 className="text-center text-2xl font-serif font-bold mb-8">VIDEO</h1>
+            <video className="w-full h-full aspect-video rounded-lg shadow-lg" typeof="video/mp4" controls src="/rfvideo.mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          
+          
+          <h1 className="text-center text-2xl font-serif font-bold mb-4">OUR PRODUCTS</h1>
 
           {/* Product Cards */}
           <div className="mt-8 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center gap-6">
@@ -176,6 +186,7 @@ export default function Home() {
           {/* Feedback Section */}
           <div className="mt-5">
             <FeedBack />
+           
           </div>
         </main>
       )}

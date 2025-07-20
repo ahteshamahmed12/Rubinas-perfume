@@ -7,7 +7,7 @@ function CartIndicator() {
 
   const updateCartCount = () => {
     try {
-      const cart = JSON.parse(localStorage.getItem('cart') || '[]'); // ✅ fixed from '{}' to '[]'
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]'); // 
       const total = cart.reduce((sum: number, item: any) => sum + (item.buyQuantity || 1), 0); // ✅ use buyQuantity
       setCartCount(total);
     } catch (error) {

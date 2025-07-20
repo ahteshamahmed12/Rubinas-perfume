@@ -15,8 +15,15 @@ function Cart() {
     try {
       const cartData = localStorage.getItem("cart");
       if (cartData) {
-        const cart = JSON.parse(cartData);
-        setproducts(cart);
+        const parsedCart = JSON.parse(cartData);
+
+        // ✅ Ensure parsedCart is an array
+        if (Array.isArray(parsedCart)) {
+          setproducts(parsedCart);
+        } else {
+          console.error("Cart data is not an array:", parsedCart);
+          setproducts([]);
+        }
       }
     } catch (error) {
       console.error("Failed to parse cart:", error);
@@ -44,7 +51,6 @@ function Cart() {
       closeOnClick: false,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
       theme: "light",
       transition: Bounce,
     });
@@ -53,18 +59,23 @@ function Cart() {
   const removeItem = (id: any) => {
     const updatedCart = products.filter((item) => item._id !== id);
     setproducts(updatedCart);
+
     if (updatedCart.length === 0) {
       localStorage.removeItem("cart");
     } else {
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
+
     notify();
   };
 
-  const total = products.reduce(
-    (acc, item) => acc + (item.price || 0) * (item.buyQuantity || 1),
-    0
-  );
+  // ✅ Safely calculate total
+  const total = Array.isArray(products)
+    ? products.reduce(
+        (acc, item) => acc + (item.price || 0) * (item.buyQuantity || 1),
+        0
+      )
+    : 0;
 
   return (
     <div className="min-h-screen bg-slate-50 p-6 flex justify-center items-center">

@@ -12,44 +12,62 @@ type Product = {
   description: string;
   price: number;
   image: any;
-  quantity: number; // this is the product bottle size e.g. 100ml
+  quantity: number; // e.g., 100ml bottle
   gender: string;
   stock: string;
 };
 
 export default function ProductDetails({ product }: { product: Product }) {
-  const [quantity, setQuantity] = useState(1); // user-selected purchase quantity
+  const [quantity, setQuantity] = useState(1);
   const router = useRouter();
 
   const handleAddToCart = () => {
     const cartPromise = new Promise<void>((resolve, reject) => {
       try {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        const index = cart.findIndex((item: any) => item._id === product._id);
-
-        if (index > -1) {
-          cart[index].buyQuantity += quantity; // ✅ Correct key
-        } else {
-          cart.push({ ...product, buyQuantity: quantity }); // ✅ Correct key
+        // Defensive: handle invalid or missing localStorage data
+        const rawCart = localStorage.getItem('cart');
+        let cart = [];
+  
+        if (rawCart) {
+          try {
+            cart = JSON.parse(rawCart);
+            if (!Array.isArray(cart)) {
+              console.warn("Cart data is not an array. Resetting...");
+              cart = [];
+            }
+          } catch (jsonErr) {
+            console.error("Invalid JSON in cart:", jsonErr);
+            localStorage.removeItem("cart"); // clean corrupted data
+            cart = [];
+          }
         }
-
+  
+        const index = cart.findIndex((item: any) => item._id === product._id);
+  
+        if (index > -1) {
+          cart[index].buyQuantity += quantity;
+        } else {
+          cart.push({ ...product, buyQuantity: quantity });
+        }
+  
         localStorage.setItem('cart', JSON.stringify(cart));
         resolve();
       } catch (error) {
-        console.error('Add to cart error:', error);
-        reject();
+        console.error('Add to cart full error:', error);
+        reject(error); // send actual error to toast
       }
     });
-
+  
     toast.promise(cartPromise, {
       loading: 'Adding to cart...',
       success: () => {
-        router.push('/cart'); // ✅ Redirect to cart after adding
+        router.push('/cart');
         return 'Added to cart!';
       },
-      error: 'Something went wrong.',
+      error: (err: any) => `Something went wrong: ${err?.message || err}`,
     });
   };
+  
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-14 p-6">
