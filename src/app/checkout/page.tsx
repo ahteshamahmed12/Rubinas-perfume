@@ -123,7 +123,7 @@ export default function CheckoutPage() {
               <div>
                 <h3 className="font-medium">{item.title}</h3>
                 <p>PKR {item.price.toFixed(2)}</p>
-                <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                <p className="text-sm text-gray-500">Qty:{item.quantity}</p>
               </div>
             </div>
           ))}

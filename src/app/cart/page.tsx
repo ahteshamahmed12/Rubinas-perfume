@@ -37,11 +37,17 @@ function Cart() {
 
   const proceedToCheckout = () => {
     if (products.length > 0) {
-      localStorage.setItem("order", JSON.stringify(products));
+      const orderItems = products.map((item) => ({
+        ...item,
+        quantity: item.buyQuantity || 1, // ✅ Normalize to `quantity` for checkout
+      }));
+  
+      localStorage.setItem("order", JSON.stringify(orderItems));
       localStorage.removeItem("cart");
       router.push("/checkout");
     }
   };
+  
 
   const notify = () => {
     toast.error("Item removed successfully", {

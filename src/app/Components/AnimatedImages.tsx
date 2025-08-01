@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 
 const images = [
-  { src: "/pic1.png", alt: "Premium Oud Fragrance Bottle" },
+  { src: "/pic1a.png", alt: "Premium Oud Fragrance Bottle" },
   { src: "/pic3.png", alt: "Elegant Perfume Packaging Showcase" },
   { src: "/pic4.png", alt: "Exclusive Signature Scent" },
   { src: "/pic5.png", alt: "Exclusive Signature Scent" },
